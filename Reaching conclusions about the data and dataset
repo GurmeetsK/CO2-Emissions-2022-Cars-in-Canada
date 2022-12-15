@@ -1,0 +1,33 @@
+To complete our analysis, we will rehash our analyses from Part 2 and add average CO2 Emissions to them, as well.
+
+SELECT Cylinders, 
+COUNT(*),
+avg(`CO2 Emissions(g/km)`)
+FROM `my2022 fuel consumption ratings`
+GROUP BY Cylinders
+ORDER BY avg(`CO2 Rating`) asc
+
+SELECT `Engine Size(L)`, 
+COUNT(*),
+avg(`CO2 Emissions(g/km)`)
+FROM `my2022 fuel consumption ratings`
+GROUP BY `Engine Size(L)`
+ORDER BY avg(`CO2 Rating`) asc
+
+SELECT `Vehicle Class`, 
+COUNT(*),
+avg(`CO2 Emissions(g/km)`)
+FROM `my2022 fuel consumption ratings`
+GROUP BY `Vehicle Class`
+ORDER BY avg(`CO2 Rating`) asc
+
+From just these three queries, we can see a clearer picture of carbon dioxide emissions that these categories emit.
+
+Using CO2 Rating, while good for brief analyses and overviews, remains unclear and, sometimes, too simplistic.
+
+If car companies use these ratings, they would be able to get away with higher emissions using simple data analysis. 
+Moreover, according to research, Canada and USA do have the highest co2 emissions.
+
+Hence, like in the UK, lesser co2 emissions need to be incentivized for car companies. 
+These incentives can include tax breaks, or for the car owner, taxes so they would be unwiling to use such cars, 
+and thereby putting a supply chain burden on car companies.
