@@ -1,0 +1,33 @@
+To begin with, if we take our Pearson Coefficient query and apply it to the Vehicle class, 
+we will see that all coefficients are in the negative except for mini-compact, compact and two-seater.
+
+To further this analysis and before we continue, we will also calculate range by vehicle class 
+
+SELECT `Vehicle Class`,
+ MIN(`CO2 Emissions(g/km)`),
+MAX(`CO2 Emissions(g/km)`),
+(MAX(`CO2 Emissions(g/km)`)-MIN(`CO2 Emissions(g/km)`)) as 'range'
+FROM`my2022 fuel consumption ratings`
+GROUP BY `Vehicle Class`
+
+
+SELECT Make,
+ MIN(`CO2 Emissions(g/km)`),
+MAX(`CO2 Emissions(g/km)`),
+(MAX(`CO2 Emissions(g/km)`)-MIN(`CO2 Emissions(g/km)`))
+FROM`my2022 fuel consumption ratings`
+GROUP BY Make
+
+We can already see from our ranges that - two-seater do have the highest range, and if we look at our query for make - Bugatti and Lamborghini, 
+which we have already queried to know that these are primarily two-seaters, are outliers.
+
+For the other Makes and Vehicle Classes, take for example Toyota and HyundaI and Kia, 
+these have a higher count, meaning a higher selection of vehicle classes, so their ranges are much higher.
+
+Yet, there are only a select few makes that have consistently low co2 emissions and a lower range, 
+the biggest example being MINI, MAZDA, AND MITSUBISHI.
+
+This shows that Car companies, at least in Canada, are not incentivized to consistently create more cars with better co2 emissions.
+
+The biggest example of this is checking the same dataset from the databse for hybrid or electric cars. 
+The counts for the other two combined are a little more than half that of regular petrol and diesel cars.
