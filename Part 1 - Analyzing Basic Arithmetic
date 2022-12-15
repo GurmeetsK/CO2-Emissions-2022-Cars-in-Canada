@@ -1,0 +1,44 @@
+
+For the very first thing, we will check the average CO2 Emissions(in g/kg) of all cars as well as combined fuel consumption(L/100km)
+
+SELECT avg(`CO2 Emissions(g/km)`)
+FROM `my2022 fuel consumption ratings`
+
+SELECT avg(`Fuel Consumption(Comb (L/100 km))`)
+FROM `my2022 fuel consumption ratings`
+
+
+The result gives us 259.17 g/km and 11.1 L/100km(rounded to the nearest hundredth). What does this mean?
+
+Essentially, each diesel or petrol car emits a certain level of grams into the atmosphere.The higher the number, the worse the impact on the environment. 
+Higher numbers also generally lead to higher fuel consumption - an indicator of poor fuel economy.(taken by buyacar uk).
+
+Next, we will check to see how the CO2 Ratings of the cars are spread out. The ratings provided by the dataset are from 1 to 10, with 1 being the worst.
+
+SELECT `CO2 Rating`, COUNT(*)
+FROM `my2022 fuel consumption ratings`
+GROUP BY `CO2 Rating`
+
+Immediately, what stands out is, though the results(attached in the repo as a Tableau chart) are parabolic in nature, 
+there are more inputs towards the to the left side. Hence, there are more cars with a greater number of CO2 Emissions, than not.
+
+The next logical step would be to ascertain how these ratings relate to the CO2 Emissions per gram and what the average is for each rating.
+
+SELECT DISTINCT(`CO2 Rating`),
+avg(`CO2 Emissions(g/km)`)
+from `my2022 fuel consumption ratings`
+GROUP BY `CO2 Rating`
+ORDER BY `CO2 Rating` asc
+
+We notice that the averages are more far apart as the ratings get worse and the difference between ratings get better as as emissions get lower. 
+This is attributable to the fact that, as stated above, there is a bigger number of cars with worse ratings than good ones.
+
+Doing the same query for Fuel Consumption, we get similar results:
+
+SELECT DISTINCT(`CO2 Rating`),
+avg(`Fuel Consumption(Comb (L/100 km))`)
+from `my2022 fuel consumption ratings`
+GROUP BY `CO2 Rating`
+ORDER BY `CO2 Rating` asc
+
+Thus, proving that fuel consumption and co2 emissions are quite a hefty worry when it comes to petrol and diesel car transportation.
