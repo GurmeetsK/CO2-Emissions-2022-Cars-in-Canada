@@ -1,0 +1,126 @@
+To preface our analysis on skewness, we will use the Pearson Coefficient Formula. 
+A variation of this formula includes the Mean, Mode and Standard Deviation, which is below:
+
+(mean-mode)/standard deviation
+
+If the result is negative, we can discern that the the mode is on the right of the mean(negatively skewed distribution).
+If the result is positive, the reverse is true(positively skewed distribution).
+
+The very first thing we want to do is query some calculations that will help us define skew.
+
+select
+	Make,
+    Count(*),
+     min(`CO2 Emissions(g/km)`),
+     avg(`CO2 Emissions(g/km)`) as mean,
+     max(`CO2 Emissions(g/km)`),
+     stddev(`CO2 Emissions(g/km)`) as sd
+  from `my2022 fuel consumption ratings`
+  GROUP By Make
+	ORDER BY sd asc
+
+
+The above query tells us everything for our skew formula but not our mode. To find mode, we must do the below query:
+
+SELECT
+    `Make`,
+    MAX(`CO2 Emissions(g/km)`) as mode_co2
+FROM
+    (
+        SELECT
+            `Make`,
+            `CO2 Emissions(g/km)`,
+            cnt,
+            DENSE_RANK() OVER(
+                PARTITION BY `Make`
+                ORDER BY
+                    cnt DESC
+            ) as rnk
+        FROM
+            (
+                SELECT
+                    `Make`,
+                    `CO2 Emissions(g/km)`,
+                    COUNT(*) as cnt
+                FROM
+                    `my2022 fuel consumption ratings`
+                GROUP By
+                    `Make`,
+                    `CO2 Emissions(g/km)`
+            ) x
+    ) y
+WHERE
+    rnk = 1
+GROUP BY
+    `Make`
+
+
+After this, we can manually plug in the numbers we calculated to the Coefficient formula, 
+or we could optimize both our queries so that everything can be found in one query, which we will do using an Inner Join as below:
+
+SELECT
+    t1.Make,
+    MAX(t1.mode_co2) as mode_co2,
+    t2.count,
+    t2.min,
+    t2.mean,
+    t2.max,
+    t2.sd,
+    (t2.mean - MAX(t1.mode_co2)) / t2.sd as new_column
+FROM
+    (SELECT
+        `Make`,
+        MAX(`CO2 Emissions(g/km)`) as mode_co2
+    FROM
+        (SELECT
+            `Make`,
+            `CO2 Emissions(g/km)`,
+            DENSE_RANK() OVER(
+                PARTITION BY `Make`
+                ORDER BY
+                    COUNT(*) DESC
+            ) as rnk
+        FROM
+            `my2022 fuel consumption ratings`
+        GROUP BY
+            `Make`,
+            `CO2 Emissions(g/km)`
+        ) x
+    WHERE
+        rnk = 1
+    GROUP BY
+        `Make`
+    ) t1
+INNER JOIN
+    (SELECT
+        Make,
+        COUNT(*) as count,
+        MIN(`CO2 Emissions(g/km)`) as min,
+        AVG(`CO2 Emissions(g/km)`) as mean,
+        MAX(`CO2 Emissions(g/km)`) as max,
+        STDDEV(`CO2 Emissions(g/km)`) as sd
+    FROM
+        `my2022 fuel consumption ratings`
+    GROUP BY
+        Make
+    ) t2
+ON t1.Make = t2.Make
+GROUP BY
+    t1.Make
+ORDER BY
+    sd ASC
+
+
+
+What we can get from this query is that a majority of the Makes are negatively skewed. 
+This means that there are more cars per make that have more CO2 Emissions than their respective average.
+
+In terms of Lexus and Buick, our original question, they are both negatively skewed. 
+So why is Lexus placed where it was in our results from Part 2? Because Buick’s CO2 Ratings were not as varied(4-6) than that of Lexus(3-9).
+
+In our set of queries, we also notice the standard deviations for each make have quite a range - from 0 to 60. Why could this be?
+
+This could be due to the varying sample sizes of each Make and 
+it could also be due to the different aspects of each car, such as the vehicle classes, certain makes provide.
+
+We will do several queries in the next part to clarify and understand this.
