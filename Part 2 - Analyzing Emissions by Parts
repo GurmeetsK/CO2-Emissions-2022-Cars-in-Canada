@@ -1,6 +1,6 @@
-In our next part, we will assuage how other parts of a car can impact Co2 emissions. 
+In our next part, we will assuage how other parts of a car can impact CO2 emissions. 
 
-These include querying car Cylinders, Transmission, Fuel Type, Vehicle Class and Make. 
+These include querying car Cylinders, Vehicle Class and Make. 
 
 SELECT Cylinders, 
 COUNT(*),
@@ -13,7 +13,6 @@ Cylinders are an integral part of a car’s fuel consumption - which helps turn 
 Hence, it is no surprise that the more cylinders there are in the car, as the above query illustrates, the higher the emissions.
 
 Next, we will get into the types of vehicles provided in the dataset.
-
 
 SELECT `Vehicle Class`, 
 COUNT(*),
@@ -38,8 +37,8 @@ FROM `my2022 fuel consumption ratings`
 GROUP BY Make
 ORDER BY avg(`CO2 Rating`) asc
 
-We can notice that(though with a lesser sample size), the usual suspects are the ones with a lower CO2 rating, 
-the Bugattis, the Lamborginis, the Bentleys, all below a average of 3 rating with Rolls Royce, with other sports cars hovering around this rating. 
+We can notice that(though with a lesser sample size), the usual suspects are the ones with a lower CO2 rating.
+The Bugattis, the Lamborginis, the Bentleys, are all below an average of 3 rating with Rolls Royce. Other sports cars hovering around this rating. 
 
 In the vicinity of these sports cars, we also have Dodge, GMC and Land Rover, below the rating of 3.5. 
 
@@ -53,6 +52,6 @@ In the example of Lexus, while it has an average rating of 5.25 and average emis
 Buick, with a worse rating, has better average of emissions.
 
 In a statistical sense, we can attribute this to a lack of a sample size for Buick OR we can attribute this to Lexus, and other Makes,
-having a wider range of CO2 emissions in their cars. 
+having a wider range of CO2 emissions, and thus, ratings, in their cars. 
 
 We will also explore this in our analyses, starting in the next part.
